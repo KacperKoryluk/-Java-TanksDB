@@ -14,7 +14,55 @@ import DBPack.DBOperations;
 public class DatabaseCreator 
 {
 
-	
+	public static void insertExampleValues(Connection connection)
+	{
+		Statement stmt = null;
+		try
+		{
+			stmt = connection.createStatement();
+			stmt.executeUpdate("insert into main_armament values (1, 76, 'ZiS-5', 'rifled', null, 'LZK')");
+			stmt = connection.createStatement();
+			stmt.executeUpdate("insert into main_armament values (2, 122, 'U-11', 'rifled', null, 'LZK')");
+			stmt = connection.createStatement();
+			stmt.executeUpdate("insert into main_armament values (3, 57, 'project 413', 'rifled', null, 'LZK')");
+			
+			
+			stmt = connection.createStatement();
+			stmt.executeUpdate("insert into turrets values (1, 75, 70, 70, 3)");
+			stmt = connection.createStatement();
+			stmt.executeUpdate("insert into turrets values (2, 75, 70, 70, 2)");
+			stmt = connection.createStatement();
+			stmt.executeUpdate("insert into turrets values (3, 45, 45, 45, 1)");
+			
+			stmt = connection.createStatement();
+			stmt.executeUpdate("insert into secondary_armament values (1, 7.62, 'DT', 500)");
+			stmt = connection.createStatement();
+			stmt.executeUpdate("insert into secondary_armament values (2, 7.62, 'DT', 500)");
+			stmt = connection.createStatement();
+			stmt.executeUpdate("insert into secondary_armament values (3, 7.62, 'DT', 500)");
+			
+			stmt = connection.createStatement();
+			stmt.executeUpdate("insert into engines values (1, 600, 335, 38880, 35)");
+			stmt = connection.createStatement();
+			stmt.executeUpdate("insert into engines values (2, 600, 335, 38880, 35)");
+			stmt = connection.createStatement();
+			stmt.executeUpdate("insert into engines values (3, 600, 335, 38880, 35)");
+			
+			stmt = connection.createStatement();
+			stmt.executeUpdate("insert into tanks values(2, 1, 1, 2, TO_DATE('06/12/1939', 'DD/MM/YYYY'), TO_DATE('06/12/1939', 'DD/MM/YYYY'))");
+			stmt = connection.createStatement();
+			stmt.executeUpdate("insert into tanks values(3, 2, 2, 1, TO_DATE('06/12/1939', 'DD/MM/YYYY'), TO_DATE('06/12/1939', 'DD/MM/YYYY'))");
+			stmt = connection.createStatement();
+			stmt.executeUpdate("insert into tanks values(1, 3, 3, 3, TO_DATE('06/12/1939', 'DD/MM/YYYY'), TO_DATE('06/12/1939', 'DD/MM/YYYY'))");
+			
+			stmt = connection.createStatement(); //Example. This tank, has null values in every FK field, won't be seen in tank_view
+			stmt.executeUpdate("insert into tanks values(4, null, null, null, TO_DATE('06/12/1939', 'DD/MM/YYYY'), TO_DATE('06/12/1939', 'DD/MM/YYYY'))");
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
 	
 	public static void createTables(Connection connection)
 	{
@@ -46,7 +94,7 @@ public class DatabaseCreator
 						"ENGINE_ID NUMBER (5,0) primary key NOT NULL, "+
 						"POWER NUMBER(5,0), "+
 						"OPERATIONAL_RANGE NUMBER(5,0), "+
-						"FUEL_CAPACITY NUMBER(5,0), "+
+						"ENGINE_DISPLACEMENT NUMBER(8,0), "+
 						"MAX_SPEED NUMBER(3,0) "+
 						")";
 		String createSecondaryArmamentTable = 
@@ -78,6 +126,8 @@ public class DatabaseCreator
 						"MANUFACTURER VARCHAR2(40) "+
 						")";
 		
+	
+		
 		
 		try 
 		{
@@ -91,6 +141,11 @@ public class DatabaseCreator
 			stmt.executeUpdate(createEnginesTable);
 			stmt = connection.createStatement();
 			stmt.executeUpdate(createTanksTable);
+			
+			
+			
+			
+			
 		
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -136,13 +191,20 @@ public class DatabaseCreator
 		
 		
 	}
+	/**
+	 * 
+	 * @param connection
+	 * 
+	 * Creates view of complete tanks (no null param in any ID foreign key field)
+	 * 
+	 */
 	public static void createView (Connection connection)
 	{
 		Statement stmt = null;
 		String createView = 
 				"create view TANK_VIEW as " +
 				"select t.DESIGN_DATE, t.MODIFICATION_DATE, tr.FRONT_ARMOR, tr.SIDE_ARMOR, tr.REAR_ARMOR, " +
-				"ma.MAIN_ARM_CALIBER, ma.MAIN_ARM_NAME, ma.GUN_TYPE, ma.MANUFACTURER, e.POWER, e.OPERATIONAL_RANGE, e.FUEL_CAPACITY, " +
+				"ma.MAIN_ARM_CALIBER, ma.MAIN_ARM_NAME, ma.GUN_TYPE, ma.MANUFACTURER, e.POWER, e.OPERATIONAL_RANGE, e.ENGINE_DISPLACEMENT, " +
 				"e.MAX_SPEED, sa.SEC_ARM_CALIBER, sa.SEC_ARM_NAME, sa.MAXIMUM_RANGE from TANKS t join TURRETS tr on(t.TURRET_ID=tr.TURRET_ID) " +
 				"join MAIN_ARMAMENT ma on (tr.MAIN_ARM_ID=ma.MAIN_ARM_ID) join ENGINES e on (t.ENGINE_ID = e.ENGINE_ID) join SECONDARY_ARMAMENT sa on (t.SEC_ARM_ID=sa.SEC_ARM_ID)";
 				

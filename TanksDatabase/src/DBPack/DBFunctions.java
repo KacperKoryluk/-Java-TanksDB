@@ -57,7 +57,7 @@ public class DBFunctions
 		{
 		re = DBOperations.executeQuery(connection, "select * from engines");
 		
-		System.out.println("ID/Power/Operational Range/Fuel Capacity/Max Speed");
+		System.out.println("ID/Power/Operational Range/Engine Displacement/Max Speed");
 		
 		for (String s : re)
 		{
@@ -75,41 +75,66 @@ public class DBFunctions
 	
 	public static void showTankView (Connection connection)
 	{
-		Statement stmt = null; 
 		
+		ArrayList<String> out = null;
 		
 		try {
-		stmt = connection.createStatement();
-			stmt.executeQuery("select * from tank_view");
+		out = DBOperations.executeQuery(connection, "select * from tank_view");
+		
+		
+		for (String s : out)
+		{
+			System.out.println(s);
+		}
 		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
 	public static void showTankRep (Connection connection)
 	{
-		Statement stmt = null; 
-		
+		 
+		ArrayList<String> out = null;
 		
 		try {
-		stmt = connection.createStatement();
-			stmt.executeQuery("select tank_id, main_arm_caliber, max_speed from tank_view tv join main_armament ma on (ma.main_arm_id = tv.main_arm_id) "
+			
+			out = DBOperations.executeQuery(connection, "select tank_id, main_arm_caliber, max_speed from tank_view tv join main_armament ma on (ma.main_arm_id = tv.main_arm_id) "
 					 + "join engines e on (tv.engine_id = e.engine_id)");
+			
+			for (String s : out)
+			{
+				System.out.println(s);
+			}
 		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
 	
-	public static void showAvgCaliber (Connection connection)
+	public static void showTankCount (Connection connection, String caliber)
 	{
-		Statement stmt = null; 
+		ArrayList<String> out = null;
 		
 		
-		try {
-		stmt = connection.createStatement();
-			stmt.executeQuery("select count(*) from tanks"); //---------------------------------------------------
-		} catch (SQLException e) {
+		try 
+		{
+			out = DBOperations.executeQuery(connection, "select count(*) from tanks t join turrets tr using(turret_id) join main_armament ma on tr.main_arm_id=ma.main_arm_id where ma.main_arm_caliber>"+caliber);
+			System.out.println("Amount of tanks with caliber higher than " + caliber );
+			for (String s : out)
+			{
+				System.out.println(s);
+			}
+		} catch (SQLException e) 
+		{
+			e.printStackTrace();
+		} catch (Exception e) 
+		{
 			e.printStackTrace();
 		}
 	}

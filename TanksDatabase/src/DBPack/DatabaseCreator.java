@@ -7,9 +7,10 @@ import java.util.*;
 import DBPack.DBOperations;
 
 /**
- * 
+ *  DatabaseCreator creates necessary tables and view, also inserts example rows
  * @author Kacper
- * DatabaseCreator creates necessary tables and view, also inserts example rows
+ * 
+ *
  */
 public class DatabaseCreator 
 {
@@ -69,7 +70,8 @@ public class DatabaseCreator
 	{
 		Statement stmt = null;
 		
-		try {
+		try
+		{
 			//check if the JDBC driver has been loaded
 			DBOperations.checkLib();
 		} catch (ClassNotFoundException e) {
@@ -157,7 +159,8 @@ public class DatabaseCreator
 			
 			
 		
-		} catch (Exception e) {
+		} catch (Exception e) 
+		{
 			e.printStackTrace();
 		}
 	}
@@ -166,10 +169,11 @@ public class DatabaseCreator
 	{
 		Statement stmt = null;
 		
-		try {
-			//check if the JDBC driver has been loaded
+		try 
+		{
 			DBOperations.checkLib();
-		} catch (ClassNotFoundException e) {
+		} catch (ClassNotFoundException e)
+		{
 			System.err.println("The Oracle JDBC driver is unavailable.");
 			e.printStackTrace();
 			return;
@@ -196,18 +200,18 @@ public class DatabaseCreator
 			
 			
 		
-		} catch (Exception e) {
+		} catch (Exception e)
+		{
 			e.printStackTrace();
 		}
 		
 		
 	}
 	/**
-	 * 
-	 * @param connection
-	 * 
+	 *  * 
 	 * Creates view of complete tanks (no null param in any ID foreign key field)
 	 * 
+	 * @param connection
 	 */
 	public static void createView (Connection connection)
 	{
@@ -223,10 +227,20 @@ public class DatabaseCreator
 		{
 			stmt = connection.createStatement();
 			stmt.executeUpdate(createView);
-		} catch (Exception e) {
+		} catch (Exception e) 
+		{
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * tankLogsTrigger gathers information about adding and removing tanks from database and stores them in 
+	 * update_tank_logs table. 
+	 * tankCount is the amount of all tanks and completedTankcount is the amount of 
+	 * fully equipped tanks (no null foreign keys)
+	 * 
+	 * @param connection
+	 */
 	
 	public static void createTrigger(Connection connection)
 	{
@@ -245,13 +259,14 @@ public class DatabaseCreator
 				"end;";
 		
 		
-		Statement stmt = null;
+		
 		
 		try 
 		{
 			connection.createStatement().execute(tankLogsTrigger);
 			
-		} catch (Exception e) {
+		} catch (Exception e) 
+		{
 			e.printStackTrace();
 		}
 		

@@ -4,9 +4,10 @@ import java.sql.*;
 import java.util.*;
 
 /**
+ * DBFunctions contains functions (Helpful description is helpful)
  * 
  * @author Kacper
- *	DBFunctions contains functions 
+ *	
  */
 public class DBFunctions
 {
@@ -25,6 +26,11 @@ public class DBFunctions
 			e.printStackTrace();
 		}
 	}
+	/**
+	 *  Shows TANKS table
+	 * @param connection
+	 *
+	 */
 
 	public static void showTanks (Connection connection)
 	{
@@ -40,9 +46,11 @@ public class DBFunctions
 			System.out.println(s);
 		}
 		
-		} catch (SQLException e) {
+		} catch (SQLException e) 
+		{
 			e.printStackTrace();
-		} catch (Exception e) {
+		} catch (Exception e) 
+		{
 			
 			e.printStackTrace();
 		}
@@ -64,21 +72,27 @@ public class DBFunctions
 			System.out.println(s);
 		}
 		
-		} catch (SQLException e) {
+		} catch (SQLException e) 
+		{
 			e.printStackTrace();
-		} catch (Exception e) {
-			
+		} catch (Exception e) 
+		{
 			e.printStackTrace();
 		}
 	}
 	
-	
+	/**
+	 * Shows fully equipped tanks (No null FK)
+	 * @param connection
+	 *
+	 */
 	public static void showTankView (Connection connection)
 	{
 		
 		ArrayList<String> out = null;
 		
-		try {
+		try 
+		{
 		out = DBOperations.executeQuery(connection, "select * from tank_view");
 		
 		
@@ -86,10 +100,11 @@ public class DBFunctions
 		{
 			System.out.println(s);
 		}
-		} catch (SQLException e) {
+		} catch (SQLException e) 
+		{
 			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
+		} catch (Exception e) 
+		{
 			e.printStackTrace();
 		}
 	}
@@ -99,7 +114,8 @@ public class DBFunctions
 		 
 		ArrayList<String> out = null;
 		
-		try {
+		try 
+		{
 			
 			out = DBOperations.executeQuery(connection, "select tank_id, main_arm_caliber, max_speed from tank_view tv join main_armament ma on (ma.main_arm_id = tv.main_arm_id) "
 					 + "join engines e on (tv.engine_id = e.engine_id)");
@@ -108,14 +124,22 @@ public class DBFunctions
 			{
 				System.out.println(s);
 			}
-		} catch (SQLException e) {
+		} catch (SQLException e) 
+		{
 			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
+		} catch (Exception e) 
+		{
 			e.printStackTrace();
 		}
 	}
 	
+	/**
+	 * 
+	 * Displays amount of tanks equipped with guns with caliber larger than picked.
+	 * @param connection
+	 * @param caliber
+	 * 
+	 */
 	
 	public static void showTankCount (Connection connection, String caliber)
 	{

@@ -2,9 +2,11 @@ package DBPack;
 
 import DBPack.DBOperations;
 /**
- * @author Kacper
  * 
+ *  
  * Application is a class used to check if functions work. Sandbox and playground - all in one.
+ * @author Kacper
+ *
  */
 
 import java.sql.*;
@@ -13,10 +15,11 @@ public class Application
 {
 	public static void main(String[] args)
 	{
-		try {
-			//check if the JDBC driver has been loaded
+		try 
+		{
 			DBOperations.checkLib();
-		} catch (ClassNotFoundException e) {
+		} catch (ClassNotFoundException e) 
+		{
 			System.err.println("The Oracle JDBC driver is unavailable.");
 			e.printStackTrace();
 			return;
@@ -36,13 +39,16 @@ public class Application
 			DBFunctions.showTanks(con);
 			//DBFunctions.showEngines(con);
 			
-			try {
+			try 
+			{
 				con.close();
-			} catch (SQLException e) {
+			} catch (SQLException e) 
+			{
 				System.err.println("The connection can not be closed.");
 				e.printStackTrace();
 			}
-		} catch (SQLException e) {
+		} catch (SQLException e) 
+		{
 			e.printStackTrace();
 		}
 		

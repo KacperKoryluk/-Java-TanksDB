@@ -9,11 +9,12 @@ import DBPack.DBOperations;
 /**
  * 
  * @author Kacper
- * DatabaseCreator creates necessary tables and view
+ * DatabaseCreator creates necessary tables and view, also inserts example rows
  */
 public class DatabaseCreator 
 {
 
+	
 	public static void insertExampleValues(Connection connection)
 	{
 		Statement stmt = null;
@@ -126,6 +127,13 @@ public class DatabaseCreator
 						"MANUFACTURER VARCHAR2(40) "+
 						")";
 		
+		String createLogTable = 
+				"create table TANK_LOGS "+
+		"("+
+		"TANK_COUNT NUMBER (8,0), " +
+		"MOD_DATE DATE, " +
+		"COMPLETED_TANK_COUNT NUMBER(8,0) " +
+		")";
 	
 		
 		
@@ -141,6 +149,8 @@ public class DatabaseCreator
 			stmt.executeUpdate(createEnginesTable);
 			stmt = connection.createStatement();
 			stmt.executeUpdate(createTanksTable);
+			stmt = connection.createStatement();
+			stmt.executeUpdate(createLogTable);
 			
 			
 			
@@ -180,7 +190,8 @@ public class DatabaseCreator
 			stmt.executeUpdate("drop table main_armament");
 			stmt = connection.createStatement();
 			stmt.executeUpdate("drop view tank_view");
-			
+			stmt = connection.createStatement();
+			stmt.executeUpdate("drop tank_logs");
 			
 			
 			
@@ -215,6 +226,35 @@ public class DatabaseCreator
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static void createTrigger(Connection connection)
+	{
+		String tankLogsTrigger = 
+				"create trigger update_Tank_Logs "+
+				"after insert or delete on "+
+				"tanks "+
+				"declare " +
+				"tankCount number(8,0); "+
+				"completedTankCount number(8,0); "+
+				"begin "+
+				"select count(*) into tankCount from tanks; "+
+				"select count(*) into completedTankCount from tanks t join turrets tr on (t.turret_id=tr.turret_id) where t.turret_id is not null and tr.main_arm_id is not null "+
+				"and t.sec_arm_id is not null and t.engine_id is not null; "+
+				"insert into tank_logs values (tankCount, sysdate, completedTankCount); "+
+				"end;";
+		
+		
+		Statement stmt = null;
+		
+		try 
+		{
+			connection.createStatement().execute(tankLogsTrigger);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 }

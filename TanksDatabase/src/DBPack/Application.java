@@ -4,7 +4,7 @@ import DBPack.DBOperations;
 /**
  * @author Kacper
  * 
- * Application is a class used to check if the functions work. Sandbox and playground - all in one.
+ * Application is a class used to check if functions work. Sandbox and playground - all in one.
  */
 
 import java.sql.*;
@@ -25,13 +25,15 @@ public class Application
 		try 
 		{
 			Connection con = DBOperations.connect(ConnectionData.login, ConnectionData.password);
-			//DatabaseCreator.createTables(con);
-			//DatabaseCreator.createView(con);
+			DatabaseCreator.createTables(con);
+			DatabaseCreator.createView(con);
+			DatabaseCreator.createTrigger(con);
 			//DatabaseCreator.cleanUp(con);
-			//DatabaseCreator.insertExampleValues(con);
+			DatabaseCreator.insertExampleValues(con);
 			DBFunctions.showTankView(con);
 			//DBFunctions.addEngine(con, "1", "500","150", "300", "67");
 			DBFunctions.showTankCount(con, "75");
+			DBFunctions.showTanks(con);
 			//DBFunctions.showEngines(con);
 			
 			try {

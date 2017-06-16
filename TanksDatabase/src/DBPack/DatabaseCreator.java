@@ -9,7 +9,7 @@ import DBPack.DBOperations;
 /**
  * 
  * @author Kacper
- * DatabaseCreator creates necessary tables
+ * DatabaseCreator creates necessary tables and view
  */
 public class DatabaseCreator 
 {
@@ -37,7 +37,8 @@ public class DatabaseCreator
 				"TURRET_ID NUMBER(5,0) references TURRETS(TURRET_ID), "+
 				"SEC_ARM_ID NUMBER(5,0) references SECONDARY_ARMAMENT(SEC_ARM_ID), "+
 				"DESIGN_DATE DATE, "+
-				"MODIFICATION_DATE DATE "+
+				"MODIFICATION_DATE DATE, "+
+			    "CONSTRAINT uniqueParts UNIQUE (ENGINE_ID, TURRET_ID, SEC_ARM_ID) " +
 				")";
 		String createEnginesTable = 
 				"create table ENGINES " +
@@ -63,7 +64,8 @@ public class DatabaseCreator
 				"FRONT_ARMOR NUMBER(3,0), "+
 				"SIDE_ARMOR NUMBER(3,0), "+
 				"REAR_ARMOR NUMBER(3,0), "+
-				"MAIN_ARM_ID NUMBER(5,0) references MAIN_ARMAMENT(MAIN_ARM_ID) "+
+				"MAIN_ARM_ID NUMBER(5,0) references MAIN_ARMAMENT(MAIN_ARM_ID), "+
+				"CONSTRAINT uniqueGun UNIQUE(MAIN_ARM_ID) "+
 				")";
 		String createMainArmamentTable = 
 				"create table MAIN_ARMAMENT " +

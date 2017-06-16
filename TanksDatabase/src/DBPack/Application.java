@@ -1,6 +1,11 @@
 package DBPack;
 
 import DBPack.DBOperations;
+/**
+ * @author Kacper
+ * 
+ * Application is a class used to check if the functions work. Sandbox and playground - all in one.
+ */
 
 import java.sql.*;
 
@@ -23,6 +28,11 @@ public class Application
 			//DatabaseCreator.createTables(con);
 			//DatabaseCreator.createView(con);
 			//DatabaseCreator.cleanUp(con);
+			
+			//DBFunctions.addEngine(con, "1", "500","150", "300", "67");
+			
+			DBFunctions.showEngines(con);
+			
 			try {
 				con.close();
 			} catch (SQLException e) {

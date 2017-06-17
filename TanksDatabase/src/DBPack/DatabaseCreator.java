@@ -26,7 +26,7 @@ public class DatabaseCreator
 			stmt = connection.createStatement();
 			stmt.executeUpdate("insert into main_armament values (2, 122, 'U-11', 'rifled', null, 'LZK')");
 			stmt = connection.createStatement();
-			stmt.executeUpdate("insert into main_armament values (3, 57, 'project 413', 'rifled', null, 'LZK')");
+			stmt.executeUpdate("insert into main_armament values (3, 57, 'p. 413', 'rifled', null, 'LZK')");
 			
 			
 			stmt = connection.createStatement();
@@ -104,7 +104,7 @@ public class DatabaseCreator
 				"create table SECONDARY_ARMAMENT " +
 						"("+
 						"SEC_ARM_ID NUMBER (5,0) primary key NOT NULL, "+
-						"SEC_ARM_CALIBER NUMBER(5,0), "+
+						"SEC_ARM_CALIBER NUMBER(8,3), "+
 						"SEC_ARM_NAME VARCHAR2(40), "+
 						"MAXIMUM_RANGE NUMBER(5,0) "+
 						")";

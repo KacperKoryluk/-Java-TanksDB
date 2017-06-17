@@ -165,6 +165,11 @@ public class DatabaseCreator
 		}
 	}
 	
+	/**
+	 * Drops everything we have or might had created 
+	 * @param connection
+	 */
+	
 	public static void cleanUp (Connection connection)
 	{
 		Statement stmt = null;
@@ -195,7 +200,7 @@ public class DatabaseCreator
 			stmt = connection.createStatement();
 			stmt.executeUpdate("drop view tank_view");
 			stmt = connection.createStatement();
-			stmt.executeUpdate("drop tank_logs");
+			stmt.executeUpdate("drop table tank_logs");
 			
 			
 			
@@ -208,8 +213,8 @@ public class DatabaseCreator
 		
 	}
 	/**
-	 *  * 
-	 * Creates view of complete tanks (no null param in any ID foreign key field)
+	 * 
+	 * Creates view of completed tanks (no null param in any ID foreign key field)
 	 * 
 	 * @param connection
 	 */

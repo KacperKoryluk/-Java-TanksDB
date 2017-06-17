@@ -109,6 +109,11 @@ public class DBFunctions
 		}
 	}
 	
+	
+	/**
+	 * Shows report from joined tables tanks, turrets, main armament and engines
+	 * @param connection
+	 */
 	public static void showTankRep (Connection connection)
 	{
 		 
@@ -117,9 +122,11 @@ public class DBFunctions
 		try 
 		{
 			
-			out = DBOperations.executeQuery(connection, "select tank_id, main_arm_caliber, max_speed from tank_view tv join main_armament ma on (ma.main_arm_id = tv.main_arm_id) "
-					 + "join engines e on (tv.engine_id = e.engine_id)");
+			out = DBOperations.executeQuery(connection, "select t.tank_id, ma.main_arm_caliber, e.max_speed from tanks t join turrets tv on (t.turret_id=tv.turret_id) join main_armament ma on (ma.main_arm_id = tv.main_arm_id) "
+					 + "join engines e on (t.engine_id = e.engine_id)");
 			
+			
+			System.out.println("Tank ID/Main arm caliber/max speed");
 			for (String s : out)
 			{
 				System.out.println(s);
@@ -158,6 +165,28 @@ public class DBFunctions
 		{
 			e.printStackTrace();
 		} catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Showing change logs, amount of tanks after modification/modification date/amount of completed tanks after modification
+	 * @param connection
+	 */
+	
+	public static void showLogs(Connection connection)
+	{
+		ArrayList<String> out = null;
+		
+		try
+		{
+			out = DBOperations.executeQuery(connection, "select * from tank_logs");
+			for (String s : out)
+			{
+				System.out.println(s);
+			}
+		} catch (Exception e)
 		{
 			e.printStackTrace();
 		}

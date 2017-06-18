@@ -88,7 +88,7 @@ public class DatabaseCreator
 				"TURRET_ID NUMBER(5,0) references TURRETS(TURRET_ID), "+
 				"SEC_ARM_ID NUMBER(5,0) references SECONDARY_ARMAMENT(SEC_ARM_ID), "+
 				"DESIGN_DATE DATE, "+
-				"MODIFICATION_DATE DATE, "+
+				"PRODUCTION_DATE DATE, "+
 			    "CONSTRAINT uniqueParts UNIQUE (ENGINE_ID, TURRET_ID, SEC_ARM_ID) " +
 				")";
 		String createEnginesTable = 
@@ -223,7 +223,7 @@ public class DatabaseCreator
 		Statement stmt = null;
 		String createView = 
 				"create view TANK_VIEW as " +
-				"select t.DESIGN_DATE, t.MODIFICATION_DATE, tr.FRONT_ARMOR, tr.SIDE_ARMOR, tr.REAR_ARMOR, " +
+				"select t.DESIGN_DATE, t.PRODUCTION_DATE, tr.FRONT_ARMOR, tr.SIDE_ARMOR, tr.REAR_ARMOR, " +
 				"ma.MAIN_ARM_CALIBER, ma.MAIN_ARM_NAME, ma.GUN_TYPE, ma.MANUFACTURER, e.POWER, e.OPERATIONAL_RANGE, e.ENGINE_DISPLACEMENT, " +
 				"e.MAX_SPEED, sa.SEC_ARM_CALIBER, sa.SEC_ARM_NAME, sa.MAXIMUM_RANGE from TANKS t join TURRETS tr on(t.TURRET_ID=tr.TURRET_ID) " +
 				"join MAIN_ARMAMENT ma on (tr.MAIN_ARM_ID=ma.MAIN_ARM_ID) join ENGINES e on (t.ENGINE_ID = e.ENGINE_ID) join SECONDARY_ARMAMENT sa on (t.SEC_ARM_ID=sa.SEC_ARM_ID)";
@@ -251,7 +251,7 @@ public class DatabaseCreator
 	{
 		String tankLogsTrigger = 
 				"create trigger update_Tank_Logs "+
-				"after insert or delete on "+
+				"after insert or delete OR UPDATE on "+
 				"tanks "+
 				"declare " +
 				"tankCount number(8,0); "+
